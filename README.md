@@ -12,3 +12,4 @@ Visual Studio 2017
 ConsoleApplication1.cpp is used for testing the class.
 clsLinkedlst.cpp is the implementation file.
 clsLinkedlst.h is the definition header file.
+I'm not including "stdafx.h" as this should be a part of the visual studio project when its created.
