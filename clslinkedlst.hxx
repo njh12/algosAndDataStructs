@@ -1,29 +1,25 @@
-struct lstnodes{
-	int val;
-	lstnodes *nextNode;
+struct lstnodes {
+	int int_val;
+	lstnodes *ptr_nextNode;
 };
 
-/*Singularly linked list class utilizing a head and a tail.*/
 
-class clslinkedlst{
+class clslinkedlst
+{
 
 private:
-	lstnodes *headnode;
-	lstnodes *tailnode;
-	int lstsize;
-	
+	lstnodes * ptr_headnode;
+	lstnodes *ptr_tailnode;
+	int int_lstsize;
+
 public:
-	
+	clslinkedlst();
+	~clslinkedlst();
 	lstnodes* newNode(int inval);
 	void insertEnd(int inval);
 	void insValByPos(int inval);
 	void lstprint();
 	void delval(int inval);
 	void setTail();
-	clslinkedlst();
-	~clslinkedlst();
 };
-
-
-
 
