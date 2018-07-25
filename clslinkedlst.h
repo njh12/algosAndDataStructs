@@ -1,8 +1,8 @@
 #pragma once
 
 struct lstnodes {
-	int val;
-	lstnodes *nextNode;
+	int int_val;
+	lstnodes *ptr_nextNode;
 };
 
 
@@ -10,9 +10,9 @@ class clslinkedlst
 {
 
 private:
-	lstnodes * headnode;
-	lstnodes *tailnode;
-	int lstsize;
+	lstnodes * ptr_headnode;
+	lstnodes *ptr_tailnode;
+	int int_lstsize;
 
 public:
 	clslinkedlst();
