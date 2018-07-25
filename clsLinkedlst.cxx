@@ -8,129 +8,131 @@ using namespace std;
 //Consructor
 clslinkedlst::clslinkedlst()
 {
-	this->headnode = NULL;
-	this->tailnode = NULL;
-	this->lstsize = 0;
+	this->ptr_headnode = NULL;
+	this->ptr_tailnode = NULL;
+	this->int_lstsize = 0;
 };
+
 //Destructor
 clslinkedlst::~clslinkedlst()
 {
-	lstnodes *cur = this->headnode;
-	lstnodes *next;
-	while (cur != NULL) {
-		next = cur->nextNode;
-		delete cur;
-		cur = next;
+	lstnodes *ptr_cur = this->ptr_headnode;
+	lstnodes *ptr_next = ptr_cur;
+	while (ptr_cur != NULL) {
+		ptr_next = ptr_cur->ptr_nextNode;
+		delete ptr_cur;
+		ptr_cur = ptr_next;
 	};
-	this->headnode = NULL;
-	this->tailnode = NULL;
-	lstsize = 0;
+	this->ptr_headnode = NULL;
+	this->ptr_tailnode = NULL;
+	int_lstsize = 0;
 };
 
-//Creates a new node and sets its data to inval.
-lstnodes* clslinkedlst::newNode(int inval)
+//Creates a new node and sets its data to int_inval.
+
+lstnodes* clslinkedlst::newNode(int int_inval)
 {
-	lstnodes *tempnode = new lstnodes();
-	tempnode->val = inval;
-	tempnode->nextNode = NULL;
-	return(tempnode);
+	lstnodes *ptr_newNode = new lstnodes();
+	ptr_newNode->int_val = int_inval;
+	ptr_newNode->ptr_nextNode = NULL;
+	return(ptr_newNode);
 };
-//Inserts nodes into the end of linked list.
-//and increments the size of the list by one.
-void clslinkedlst::insertEnd(int inval)
+
+/*Inserts nodes into the end of linked list and increment the size of the list by one.
+  If the ptr_headnode is NULL insert int_inval into ptr_headnode and set the tailnode equal to ptr_headnode.
+  else...Create a new node and set ptr_tailnode equal to the new node.*/
+
+void clslinkedlst::insertEnd(int int_inval)
 {
-	//If...The headnode is NULL insert the inval into the headnode and set the tail equal to the headnode.
-	if (this->headnode == NULL) {
+	if (this->ptr_headnode == NULL) {
 		cout << " List is empty inserting at the head.\n";
-		this->headnode = newNode(inval);
-		this->tailnode = this->headnode;
-	}
-	//else...Create a new node and set tailnode equal to the new node.
-	else { 
-		this->tailnode->nextNode = newNode(inval);
-		this->tailnode = this->tailnode->nextNode;
+		this->ptr_headnode = newNode(int_inval);
+		this->ptr_tailnode = this->ptr_headnode;
+	}else { 
+		this->ptr_tailnode->ptr_nextNode = newNode(int_inval);
+		this->ptr_tailnode = this->ptr_tailnode->ptr_nextNode;
 	};
-	this->lstsize++;
+
+	this->int_lstsize++;
 };
 
 
-//Deletes items from linked list and adjusts the tail and decrements the size of list.
-void clslinkedlst::delval(int inval)
-{
-	lstnodes *cur = this->headnode;
-	lstnodes *prev = cur;
-	cout << "Searching for the value to delete: " << inval << "\n";
+/* Deletes items from linked list and decrements the size of list.
+	If the ptr_current nodes value in the list does NOT equal int_inval
+	traverse to the next node...else the value was found in the ptr_cur node.
+	If the lst nodes position with the value is in the front of the list
+	move the ptr_headnode to the next node...else if he value eqauls the value in the ptr_tailnode
+	set the ptr_tailnode to NULL and reset the tails location...else the value is in the middle of the list
+	so shorten the list by removing the ptr_cur node from the list.*/
 
-	while (cur != NULL) {
-		//If...the current nodes value in the list does NOT equal inval
-		//traverse to the next node...else...the value was found in the current node.
-		if (cur->val != inval) {
-			cout << "\n Value Not found. Traversing to next node\n";
-			prev = cur;
-			cur = cur->nextNode;
+void clslinkedlst::delval(int int_inval)
+{
+	lstnodes *ptr_cur = this->ptr_headnode;
+	lstnodes *ptr_prev = ptr_cur;
+	cout << "Searching for the value to delete: " << int_inval << "\n";
+
+	while (ptr_cur != NULL) {
+		if (ptr_cur->int_val != int_inval) {
+			ptr_prev = ptr_cur;
+			ptr_cur = ptr_cur->ptr_nextNode;
 		} else {
-			cout << " Value: " << inval << " found.\n";
-			/*if...The lst nodes position with the value is in the front of the list
-			  move the headnode to the next node.
-			  else if...The value eqauls the value in the tailnode
-			  set the tailnode to NULL and reset the tails location.
-			  else...The value is in the middle of the list
-			  so shorten the list by removing the cur node from the list.*/
-			if (cur == this->headnode)
-				this->headnode = this->headnode->nextNode;
-			else if (cur == this->tailnode) {
-				this->tailnode = prev;
-				this->tailnode->nextNode = NULL;
+			cout << " Value: " << int_inval << " found.\n";
+			if (ptr_cur == this->ptr_headnode)
+				this->ptr_headnode = this->ptr_headnode->ptr_nextNode;
+			else if (ptr_cur == this->ptr_tailnode) {
+				this->ptr_tailnode = ptr_prev;
+				this->ptr_tailnode->ptr_nextNode = NULL;
 			} else
-				prev->nextNode = cur->nextNode;
+				ptr_prev->ptr_nextNode = ptr_cur->ptr_nextNode;
+
 			cout << " Value deleted\n";
-			this->lstsize--;
-			delete cur;
-			cur = NULL;
+			this->int_lstsize--;
+			delete ptr_cur;
+			ptr_cur = NULL;
 		};
 	};
 };
 
-// Inserts inval into the linked list by position.
-void clslinkedlst::insValByPos(int inval)
+/*	Inserts int_inval into the linked list by position.
+	If the list is empty insert int_inval at head/tail of list.
+	While the list is NOT empty traverse to determine where to insert new node.
+	If the int_inval is less then the ptr_cur-> val and ptr_cur = this->ptr_headnode
+	the int_inval needs to become the head...else the int_inval needs to be inserted 
+	somewhere in the middle of the list. If the ptr_cur is at the end of the list and greater then the ptr_tailnode
+	int_inval needs to be inserted at the end of the list. 
+	If the int_inval is greater then ptr_cur val continue traversing the list.*/
+
+void clslinkedlst::insValByPos(int int_inval)
 {
-	cout << "Searching for the correct position to insert the value: " << inval << "\n";
-	lstnodes *cur = this->headnode;
-	lstnodes *prev = cur;
-	//The list is empty insert inval at end of list.
-	if (cur == NULL)
-		insertEnd(inval);
-	// Traverse list with cur while list is NOT empty and determine where to insert new node.
-	while (cur != NULL) {
-		if (inval < cur->val) {
-				/*The list size is equal to 1 and the inval is less then the cur val.
-				   so the inval needs to become the head.*/
-				if (cur == this->headnode) { 
-					lstnodes *temp = newNode(inval);
-					temp->nextNode = cur;
-					this->headnode = temp;
-					cur = this->tailnode->nextNode;
-					this->lstsize++;
-				}
-				//The inval needs to be inserted somewhere in the middle of the list.
-				else {
-					cout << "\n  inval less then list value\n";
-					lstnodes *temp = newNode(inval);
-					prev->nextNode = temp;
-					temp->nextNode = cur;
-					cur = this->tailnode->nextNode;
-					this->lstsize++;
-				};
-		} else if (inval > cur->val) {
-				/*cur is at the end of the list and greater then the tailnode
-				  so inval needs to beinserted at the end of the list.
-				  inval is greater then cur val so continue traversing the list.*/
-				if (cur == this->tailnode) {
-					insertEnd(inval);
-					cur = this->tailnode->nextNode;
+	cout << "Searching for the correct position to insert the value: " << int_inval << "\n";
+	lstnodes *ptr_cur = this->ptr_headnode;
+	lstnodes *prev = ptr_cur;
+
+	if (ptr_cur == NULL)
+		insertEnd(int_inval);
+	while (ptr_cur != NULL) {
+		if (int_inval < ptr_cur->int_val) {
+
+			lstnodes *ptr_temp = newNode(int_inval);
+
+				if (ptr_cur == this->ptr_headnode) { 
+					ptr_temp->ptr_nextNode = ptr_cur;
+					this->ptr_headnode = ptr_temp;
 				} else {
-					prev = cur;
-					cur = cur->nextNode;
+					prev->ptr_nextNode = ptr_temp;
+					ptr_temp->ptr_nextNode = ptr_cur;
+				};
+
+				ptr_cur = this->ptr_tailnode->ptr_nextNode;
+				this->int_lstsize++;
+
+		} else if (int_inval > ptr_cur->int_val) {
+				if (ptr_cur == this->ptr_tailnode) {
+					insertEnd(int_inval);
+					ptr_cur = this->ptr_tailnode->ptr_nextNode;
+				} else {
+					prev = ptr_cur;
+					ptr_cur = ptr_cur->ptr_nextNode;
 				};
 		};
 	};
@@ -138,25 +140,27 @@ void clslinkedlst::insValByPos(int inval)
 
 void clslinkedlst::setTail()
 {
-	lstnodes *cur;
-	cur = this->headnode;
-	while (cur->nextNode != NULL)
-		cur = cur->nextNode;
-	this->tailnode = cur;
+	lstnodes *ptr_cur;
+	ptr_cur = this->ptr_headnode;
+	while (ptr_cur->ptr_nextNode != NULL)
+		ptr_cur = ptr_cur->ptr_nextNode;
+	this->ptr_tailnode = ptr_cur;
 };
+
 //Prints all items in linked list.
 void clslinkedlst::lstprint()
 {
-	lstnodes *cur;
-	cur = this->headnode;
+	lstnodes *ptr_cur;
+	ptr_cur = this->ptr_headnode;
 	cout << "Printing the values within the linked list.\n";
-	while (cur != NULL) {
-		cout << "Value in Node is:" << cur->val << '\n';
-		cur = cur->nextNode;
+	while (ptr_cur != NULL) {
+		cout << "Value in Node is:" << ptr_cur->int_val << '\n';
+		ptr_cur = ptr_cur->ptr_nextNode;
 	};
-	delete cur;
-	cur = NULL;
-	cout << "\n The head value is:" << this->headnode->val
-		<< "\n The tail value is:" << this->tailnode->val
-		<< "\n The list holds " << this->lstsize << " elements.\n";
+	cout << "\n The head value is:" << this->ptr_headnode->int_val
+		<< "\n The tail value is:" << this->ptr_tailnode->int_val
+		<< "\n The list holds " << this->int_lstsize << " elements.\n";
+
+	delete ptr_cur;
+	ptr_cur = NULL;
 };
