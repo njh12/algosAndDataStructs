@@ -127,14 +127,20 @@ void clslinkedlst::insValByPos(int int_inval)
 				ptr_cur = this->ptr_tailnode->ptr_nextNode;
 				this->int_lstsize++;
 
-		} else if (int_inval > ptr_cur->int_val) {
-				if (ptr_cur == this->ptr_tailnode) {
-					insertEnd(int_inval);
-					ptr_cur = this->ptr_tailnode->ptr_nextNode;
-				} else {
-					prev = ptr_cur;
-					ptr_cur = ptr_cur->ptr_nextNode;
-				};
+		}
+		else if (int_inval > ptr_cur->int_val) {
+			if (ptr_cur == this->ptr_tailnode) {
+				insertEnd(int_inval);
+				ptr_cur = this->ptr_tailnode->ptr_nextNode;
+			}
+			else {
+				prev = ptr_cur;
+				ptr_cur = ptr_cur->ptr_nextNode;
+			}
+		} else {
+			cout << "Value already present.\n";
+			ptr_cur = this->ptr_tailnode->ptr_nextNode;
+
 		};
 	};
 };
