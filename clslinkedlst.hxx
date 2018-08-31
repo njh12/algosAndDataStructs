@@ -10,13 +10,13 @@ class clslinkedlst
 private:
 	lstnodes * ptr_headnode;
 	lstnodes *ptr_tailnode;
+	lstnodes* newNode(int inval);
 	void setTail();
 	int int_lstsize;
 
 public:
 	clslinkedlst();
 	~clslinkedlst();
-	lstnodes* newNode(int inval);
 	void insertEnd(int inval);
 	void insValByPos(int inval);
 	void lstprint();
