@@ -10,6 +10,7 @@ class clslinkedlst
 private:
 	lstnodes * ptr_headnode;
 	lstnodes *ptr_tailnode;
+	void setTail();
 	int int_lstsize;
 
 public:
@@ -20,6 +21,6 @@ public:
 	void insValByPos(int inval);
 	void lstprint();
 	void delval(int inval);
-	void setTail();
+	
 };
 
